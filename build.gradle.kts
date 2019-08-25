@@ -1,9 +1,14 @@
 plugins {
     java
+    application
 }
 
 group = "ndk.dk.cache"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClassName = "Main"
+}
 
 repositories {
     mavenCentral()
