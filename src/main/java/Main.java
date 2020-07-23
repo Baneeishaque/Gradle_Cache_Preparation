@@ -92,6 +92,7 @@ public class Main {
                                 String[] commandWithArguments = new String[]{"winrar", "u", "-x" + fileEntry.getParent() + "\\*", cachesFolder+"\\gradle_repository.rar", fileEntry.getParent()};
                                 Process process = new ProcessBuilder(commandWithArguments).start();
                                 process.waitFor();
+
                             } else {
 
                                 String gradleDistributionFullPath=fileEntry.getPath();
@@ -115,11 +116,13 @@ public class Main {
                             }
                         }
                     } else {
+
                         String[] commandWithArguments = new String[]{"winrar", "u", cachesFolder+"\\gradle_repository.rar", fileEntry.getPath()};
                         Process process = new ProcessBuilder(commandWithArguments).start();
                         process.waitFor();
                     }
                 } catch (IOException | InterruptedException e) {
+
                     e.printStackTrace();
                 }
             }

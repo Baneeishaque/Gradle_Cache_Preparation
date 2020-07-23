@@ -1,4 +1,5 @@
 plugins {
+
     java
     application
 }
@@ -11,16 +12,17 @@ application {
 }
 
 repositories {
+
     mavenCentral()
 }
 
 dependencies {
 
-    // https://mvnrepository.com/artifact/commons-io/commons-io
     compile ("commons-io","commons-io","2.6")
-    testCompile("junit", "junit", "4.12")
+//    testCompile("junit", "junit", "4.12")
 }
 
 configure<JavaPluginConvention> {
+
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
