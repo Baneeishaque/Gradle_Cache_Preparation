@@ -8,7 +8,8 @@ group = "ndk.dk.cache"
 version = "1.0-SNAPSHOT"
 
 application {
-    mainClassName = "Main"
+
+    mainClass.set("Main")
 }
 
 repositories {
@@ -18,11 +19,5 @@ repositories {
 
 dependencies {
 
-    compile ("commons-io","commons-io","2.6")
-//    testCompile("junit", "junit", "4.12")
-}
-
-configure<JavaPluginConvention> {
-
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    implementation("commons-io", "commons-io", "2.8.0")
 }
