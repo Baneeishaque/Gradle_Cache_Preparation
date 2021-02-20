@@ -15,7 +15,6 @@ public class Main {
     private boolean inJdksFolder = false;
 
     List<String> distributions = new ArrayList<>();
-    List<String> jdks = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -131,22 +130,10 @@ public class Main {
 
                     if (currentFileEntryName.contains("jdk") && FilenameUtils.getExtension(currentFileEntryName).equals("zip")) {
 
-                            System.out.println("Current JDKs : " + jdks.toString());
-
-                            //TODO : Move to file utils, use interface for list contains file & not contains file
-                            if (jdks.contains(currentFileEntryName)) {
-
-                                System.out.println("JDK distribution " + currentFileEntryName + " already available in the cache.");
-
-                            } else {
-
-                                String jdkDistributionFullPath = fileEntry.getPath();
-                                System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
-                                System.out.println("Adding " + jdkDistributionFullPath);
-                                executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
-
-                                jdks.add(fileEntry.getName());
-                            }
+						String jdkDistributionFullPath = fileEntry.getPath();
+						System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
+						System.out.println("Adding " + jdkDistributionFullPath);
+						executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
                     }
 
                 } else if (inWrapperFolder) {
