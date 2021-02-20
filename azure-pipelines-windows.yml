@@ -11,7 +11,6 @@ pool:
 
 variables:
   GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
-  # KONAN_USER_HOME: 'C:/Users/VssAdministrator/.konan'
   repositoryName: Gradle-Cache-Preparation
   # Secret Variables
   MAPPED_FTP_HOST: $(FTP_HOST)
@@ -26,24 +25,11 @@ steps:
     path: $(GRADLE_USER_HOME)
   displayName: Gradle Build Cache
 
-# - task: Cache@2
-#   inputs:
-#     key: 'konan | "$(Agent.OS)"'
-#     restoreKeys: konan
-#     path: $(KONAN_USER_HOME)
-#   displayName: Konan Build Cache
-
 - task: Gradle@2
   displayName: 'Gradle Build : JVM'
   inputs:
     gradleOptions: '-Xmx3072m'
     tasks: jar
-
-# - task: Gradle@2
-#   displayName: 'Gradle Build : Kotlin Native'
-#   inputs:
-#     options: '--build-file app/build-kotlin-native.gradle.kts'
-#     gradleOptions: '-Xmx3072m'
 
 - script: 'gradlew --stop'    
   displayName: Stop Gradle Daemon
