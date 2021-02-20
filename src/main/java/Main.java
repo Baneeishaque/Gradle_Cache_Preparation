@@ -24,6 +24,7 @@ public class Main {
         String cachesFolder, gradleRepositoryFolder;
 
         //TODO : Move to CMD argument utils, use interface for 0,1,2 argument actions, use exit_status & exit_message pair return
+		
         /*
         Checking for commandline arguments
         First : Path of Gradle Repository Folder
@@ -136,8 +137,6 @@ public class Main {
                             if (jdks.contains(currentFileEntryName)) {
 
                                 System.out.println("JDK distribution " + currentFileEntryName + " already available in the cache.");
-                                // System.out.println("Adding base directory : " + fileEntry.getParent());
-                                // executeCmdCommandWithWait(new String[]{"winrar", "u", "-x" + fileEntry.getParent() + "\\*", cachesFolder + "\\gradle_repository.rar", fileEntry.getParent()});
 
                             } else {
 
@@ -180,8 +179,8 @@ public class Main {
                             if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
 //                                    System.out.println("Traversing folder " + currentFileEntryName);
-                                listFilesForFolder(fileEntry, cachesFolder);
-                            }
+                                listFilesForFolder(fileEntry, cachesFolder);                           
+							}
                         }
 
                     } else if (currentFileEntryName.equals("dists")) {
