@@ -102,16 +102,6 @@ public class Main {
                                 Process process = new ProcessBuilder(commandWithArguments).start();
                                 process.waitFor();
 
-                                // System.out.println("Adding " + fileEntry.getPath() + ".lck");
-                                // commandWithArguments[3] = fileEntry.getPath() + ".lck";
-                                // process = new ProcessBuilder(commandWithArguments).start();
-                                // process.waitFor();
-
-                                // System.out.println("Adding " + fileEntry.getPath() + ".ok");
-                                // commandWithArguments[3] = fileEntry.getPath() + ".ok";
-                                // process = new ProcessBuilder(commandWithArguments).start();
-                                // process.waitFor();
-
                                 distributions.add(fileEntry.getName());
                             }
                         }
