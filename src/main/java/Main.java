@@ -250,7 +250,7 @@ public class Main {
 
             try {
 
-                Process process = new ProcessBuilder(commandWithArguments).start();
+                Process process = new ProcessBuilder(commandWithArguments).inheritIO().start();
                 process.waitFor();
 
             } catch (InterruptedException e) {
