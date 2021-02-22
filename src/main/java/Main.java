@@ -218,15 +218,17 @@ public class Main {
                                 System.out.println("Adding " + gradleDistributionFullPath);
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", gradleDistributionFullPath, gradleDistributionFullPath + ".lck"});
                                 executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath));
-								executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lock"));
+								executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lck"));
 
                                 distributions.add(fileEntry.getName());
                             }
-                        } else {
+                        } 
+                        //TODO : Add blank gradle distribution base folders
+                        else {
 
                             if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
-//                                    System.out.println("Traversing folder " + currentFileEntryName);
+                                // System.out.println("Traversing folder " + currentFileEntryName);
                                 listFilesForFolder(fileEntry, cachesFolder);
 							}
                         }
