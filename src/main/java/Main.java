@@ -227,9 +227,8 @@ public class Main {
                         
                         else if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
-                                // System.out.println("Traversing folder " + currentFileEntryName);
-                                listFilesForFolder(fileEntry, cachesFolder);
-							}
+							// System.out.println("Traversing folder " + currentFileEntryName);
+							listFilesForFolder(fileEntry, cachesFolder);
                         }
 
                     } else if (currentFileEntryName.equals("dists")) {
