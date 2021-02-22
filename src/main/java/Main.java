@@ -224,9 +224,8 @@ public class Main {
                             }
                         } 
                         //TODO : Add blank gradle distribution base folders
-                        else {
-
-                            if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
+                        
+                        else if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
                                 // System.out.println("Traversing folder " + currentFileEntryName);
                                 listFilesForFolder(fileEntry, cachesFolder);
