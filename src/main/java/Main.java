@@ -9,48 +9,74 @@ import java.util.Objects;
 
 public class Main {
 
+    private boolean isDryRun = true;
+
+    private String gradleRepositoryFolder = "C:\\Programs\\gradle_repository";
+    private String cachesFolder = "C:\\Caches_C";
+
+    private boolean weatherCacheModules2Folder = false;
+
     private boolean inWrapperFolder = false;
     private boolean inCachesFolder = false;
     private boolean inDistsFolder = false;
     private boolean inJdksFolder = false;
+    private boolean inModules2Folder = false;
 
-    List<String> distributions = new ArrayList<>();
+    private List<String> distributions = new ArrayList<>();
 
     public static void main(String[] args) {
 
         Main main = new Main();
 
-        String cachesFolder, gradleRepositoryFolder;
+        //TODO : Stop all gradle deamons
 
-        //TODO : Move to CMD argument utils, use interface for 0,1,2 argument actions, use exit_status & exit_message pair return
-		
-        /*
-        Checking for commandline arguments
-        First : Path of Gradle Repository Folder
-        Second : Path of Caches Folder
-        */
-        if (args.length == 1) {
+        main.checkCommandLineArguments(args);
 
-            gradleRepositoryFolder = args[0];
-            cachesFolder = "C:\\Caches_C";
-
-        } else if (args.length == 2) {
-
-            gradleRepositoryFolder = args[0];
-            cachesFolder = args[1];
-
-        } else {
-
-            gradleRepositoryFolder = "C:\\Programs\\gradle_repository";
-            cachesFolder = "C:\\Caches_C";
-        }
-
-        System.out.println("Gradle Repository Folder : " + gradleRepositoryFolder);
-        System.out.println("Caches Folder : " + cachesFolder);
+        System.out.println("Is Dry Run : " + main.isDryRun);
+        System.out.println("Gradle Repository Folder : " + main.gradleRepositoryFolder);
+        System.out.println("Caches Folder : " + main.cachesFolder);
+        System.out.println("Weather cache modules-2 folder : " + main.weatherCacheModules2Folder);
 
         //TODO : Expand for whole gradle cache repository, if gradle is supported
-        final File folder = new File(gradleRepositoryFolder);
-        main.listFilesForFolder(folder, cachesFolder);
+        final File folder = new File(main.gradleRepositoryFolder);
+        main.listFilesForFolder(folder, main.cachesFolder);
+    }
+
+    public void checkCommandLineArguments(String[] args) {
+
+        //TODO : Move to CMD argument utils, use interface for 0,1,2 argument actions, use exit_status & exit_message pair return
+
+        /*
+        Checking for commandline arguments
+        First : Dry run or not; false for not dry run, anyother to dry run, default is dry run
+        Second : Weather cache modules-2 or not; true to cache, anyother to skip caching of modules-2 folder, default is skip caching of modules-2 folder
+        Third : Path of Gradle User Home Folder
+        Fourth : Path of Gradle User Home Compressed Archieve File Parent Folder
+        */
+        if (args.length >= 1) {
+
+            if(args[0].equals("false")) {
+
+                isDryRun = false;
+            }
+            if (args.length >= 2) {
+
+                if(args[1].equals("true")) {
+
+                    weatherCacheModules2Folder = true;
+                }
+                if (args.length >= 3) {
+
+                    //TODO : Check for folder existence
+                    gradleRepositoryFolder = args[2];
+
+                    if(args.length >= 4) {
+
+                        cachesFolder = args[3];
+                    }
+                }
+            }
+        }
     }
 
     //TODO : Move to folder utils, use interface for additional operations
@@ -69,9 +95,12 @@ public class Main {
 
                     case "caches" -> {
 
-                        inCachesFolder = true;
-                        inJdksFolder = false;
-                        inWrapperFolder = false;
+                        if(weatherCacheModules2Folder) {
+
+                            inCachesFolder = true;
+                            inJdksFolder = false;
+                            inWrapperFolder = false;
+                        }
                     }
                     case "jdks" -> {
 
@@ -121,10 +150,35 @@ public class Main {
                 }
 
                 //TODO : Move to flag action utils, use flag & action pairs for interfaces
-                if (inCachesFolder && currentFileEntryName.equals("modules-2")) {
+                if (inCachesFolder) {
 
-                    System.out.println("Adding modules-2 directory to cache. ");
-                    executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
+                    if(inModules2Folder){
+
+                        //TODO : Sync modules-2 files
+                        //TODO : Expand for files version 2.1 & greater
+                        if(currentFileEntryName.equals("files-2.1")) {
+
+                            System.out.println("Adding files-2.1 directory to cache. ");
+                            executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
+
+                        } else if(currentFileEntryName.contains("metadata-")) {
+
+                            if(Float.parseFloat(currentFileEntryName.replace("metadata-","")) >= 2.90)
+                            {
+                                System.out.println("Adding "+currentFileEntryName+" directory to cache. ");
+                                executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
+                            }
+                        }
+
+                    }
+                    //TODO : Expand for modules version 2 & greater
+                    else if (currentFileEntryName.equals("modules-2")) {
+
+                        inModules2Folder = true;
+                        System.out.println("Traversing folder " + currentFileEntryName);
+                        listFilesForFolder(fileEntry, cachesFolder);
+                        inModules2Folder = false;
+                    }
 
                 } else if(inJdksFolder) {
 
@@ -166,7 +220,7 @@ public class Main {
                             if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
 //                                    System.out.println("Traversing folder " + currentFileEntryName);
-                                listFilesForFolder(fileEntry, cachesFolder);                           
+                                listFilesForFolder(fileEntry, cachesFolder);
 							}
                         }
 
@@ -186,18 +240,22 @@ public class Main {
     public void executeCmdCommandWithWait(String[] commandWithArguments) {
 
         System.out.println("CMD Command : " + Arrays.toString(commandWithArguments));
-        try {
 
-            Process process = new ProcessBuilder(commandWithArguments).start();
-            process.waitFor();
+        if(!isDryRun) {
 
-        } catch (InterruptedException e) {
+            try {
 
-            System.out.println("Exception : The current thread is interrupted while waiting.\nMessage : " + e.getLocalizedMessage());
+                Process process = new ProcessBuilder(commandWithArguments).start();
+                process.waitFor();
 
-        } catch (IOException e) {
+            } catch (InterruptedException e) {
 
-            System.out.println("Exception : The command I/O Error.\nMessage : " + e.getLocalizedMessage());
+                System.out.println("Exception : The current thread is interrupted while waiting.\nMessage : " + e.getLocalizedMessage());
+
+            } catch (IOException e) {
+
+                System.out.println("Exception : The command I/O Error.\nMessage : " + e.getLocalizedMessage());
+            }
         }
     }
 }
