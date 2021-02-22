@@ -270,15 +270,15 @@ public class Main {
         return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q0r2x1y2z1w2", "-spf", folderToSyncFullPath+"\\", "-mx=9"};
     }
 
-    //7z u -t7z archive.zip -spf file1.txt file2.txt -mx=9
+    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf file1.txt file2.txt -mx=9
     public String[] updateAndAddFilesIncludingAbsolutePathsSpecifiedViaSpaceSeperatedFileListWith7zArchieve(String archieveFileFullPath, String spaceSeperatedFileListWithFullPaths) {
     
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-spf", spaceSeperatedFileListWithFullPaths, "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", spaceSeperatedFileListWithFullPaths, "-mx=9"};
     }
 
-    //7z u -t7z archive.zip -spf folder\ -x!folder\* -mx=9
+    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf folder\ -x!folder\* -mx=9
     public String[] updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(String archieveFileFullPath, String folderToUpdateAndAddFullPath) {
     
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-spf", folderToUpdateAndAddFullPath+"\\", "-x!"+folderToUpdateAndAddFullPath+"\\*", "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", folderToUpdateAndAddFullPath+"\\", "-x!"+folderToUpdateAndAddFullPath+"\\*", "-mx=9"};
     }
 }
