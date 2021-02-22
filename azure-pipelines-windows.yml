@@ -19,8 +19,8 @@ variables:
   MAPPED_FTP_PWD: $(FTP_PWD)
 
 steps:
-- script: 'dir /s "$(GRADLE_USER_HOME)"'    
-  displayName: Show $(GRADLE_USER_HOME)
+# - script: 'dir /s "$(GRADLE_USER_HOME)"'    
+#   displayName: Show $(GRADLE_USER_HOME)
 
 - task: Cache@2
   inputs:
