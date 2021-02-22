@@ -26,17 +26,17 @@ steps:
   displayName: Gradle Build Cache
 
 - task: Gradle@2
-  displayName: 'Gradle Build : JVM'
+  displayName: 'Gradle Build : Tar Distribution'
   inputs:
     gradleOptions: '-Xmx3072m'
-    tasks: jar
+    tasks: distTar
 
 - script: 'gradlew --stop'    
   displayName: Stop Gradle Daemon
 
 # Upload Executable Jar File
 - task: FtpUpload@2
-  displayName: 'FTP Upload $(repositoryName) Jar File'
+  displayName: 'FTP Upload $(repositoryName) Tar File'
   inputs:
     credentialsOption: inputs
     serverUrl: 'ftp://$(MAPPED_FTP_HOST)'
@@ -45,4 +45,4 @@ steps:
     # TODO : Add option for file instead of directory
     rootDirectory: '.'
     remoteDirectory: '/public_html/files/$(repositoryName)/$(Build.SourceVersion)'
-    filePatterns: 'build/libs/gradle_cache_preparation.jar'
+    filePatterns: 'build/distributions/gradle_cache_preparation-1.0-SNAPSHOT.tar'
