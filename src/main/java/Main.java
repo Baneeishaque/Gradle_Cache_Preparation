@@ -190,7 +190,8 @@ public class Main {
 						System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
 						System.out.println("Adding " + jdkDistributionFullPath);
 						// executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
-                        executeCmdCommandWithWait(updateAndAddFilesIncludingAbsolutePathsSpecifiedViaSpaceSeperatedFileListWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath+" "+jdkDistributionFullPath + ".lock"));
+                        executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath));
+						executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath + ".lock"));
                     }
 
                 } else if (inWrapperFolder) {
@@ -216,7 +217,8 @@ public class Main {
                                 System.out.println("Adding Gradle distribution " + currentFileEntryName + " to cache.");
                                 System.out.println("Adding " + gradleDistributionFullPath);
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", gradleDistributionFullPath, gradleDistributionFullPath + ".lck"});
-                                executeCmdCommandWithWait(updateAndAddFilesIncludingAbsolutePathsSpecifiedViaSpaceSeperatedFileListWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath+" "+gradleDistributionFullPath + ".lock"));
+                                executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath));
+								executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lock"));
 
                                 distributions.add(fileEntry.getName());
                             }
@@ -270,10 +272,10 @@ public class Main {
         return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q0r2x1y2z1w2", "-spf", folderToSyncFullPath+"\\", "-mx=9"};
     }
 
-    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf file1.txt file2.txt -mx=9
-    public String[] updateAndAddFilesIncludingAbsolutePathsSpecifiedViaSpaceSeperatedFileListWith7zArchieve(String archieveFileFullPath, String spaceSeperatedFileListWithFullPaths) {
+    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf file.txt -mx=9
+    public String[] updateAndAddFileIncludingAbsolutePathWith7zArchieve(String archieveFileFullPath, String fileToUpdateAndAddWithFullPath) {
     
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", "\""+spaceSeperatedFileListWithFullPaths+"\"", "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", fileToUpdateAndAddWithFullPath, "-mx=9"};
     }
 
     //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf folder\ -x!folder\* -mx=9
