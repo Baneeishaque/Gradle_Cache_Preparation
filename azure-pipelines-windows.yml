@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- 7z
 
 pool:
   vmImage: 'windows-latest'
