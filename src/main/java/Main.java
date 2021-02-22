@@ -273,7 +273,7 @@ public class Main {
     //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf file1.txt file2.txt -mx=9
     public String[] updateAndAddFilesIncludingAbsolutePathsSpecifiedViaSpaceSeperatedFileListWith7zArchieve(String archieveFileFullPath, String spaceSeperatedFileListWithFullPaths) {
     
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", spaceSeperatedFileListWithFullPaths, "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", "\""+spaceSeperatedFileListWithFullPaths+"\"", "-mx=9"};
     }
 
     //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf folder\ -x!folder\* -mx=9
