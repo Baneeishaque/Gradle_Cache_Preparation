@@ -19,12 +19,18 @@ variables:
   MAPPED_FTP_PWD: $(FTP_PWD)
 
 steps:
+- script: 'dir /s $(GRADLE_USER_HOME)'    
+  displayName: Show $(GRADLE_USER_HOME)
+
 - task: Cache@2
   inputs:
     key: 'gradle | "$(Agent.OS)"'
     restoreKeys: gradle
     path: $(GRADLE_USER_HOME)
   displayName: Gradle Build Cache
+
+- script: 'dir /s $(GRADLE_USER_HOME)'    
+  displayName: Show $(GRADLE_USER_HOME)
 
 - task: Gradle@2
   displayName: 'Gradle Build : Tar Distribution'
@@ -33,6 +39,9 @@ steps:
     # TODO : Add build scan, upload build scan results
     tasks: distTar
 
+- script: 'dir /s $(GRADLE_USER_HOME)'    
+  displayName: Show $(GRADLE_USER_HOME)
+  
 - script: 'gradlew --stop'    
   displayName: Stop Gradle Daemon
 
