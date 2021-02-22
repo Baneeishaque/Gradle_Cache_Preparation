@@ -30,6 +30,7 @@ steps:
   displayName: 'Gradle Build : Tar Distribution'
   inputs:
     gradleOptions: '-Xmx3072m'
+    # TODO : Add build scan, upload build scan results
     tasks: distTar
 
 - script: 'gradlew --stop'    
