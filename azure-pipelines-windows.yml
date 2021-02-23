@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- 7z
 
 pool:
   vmImage: 'windows-latest'
@@ -20,23 +21,38 @@ variables:
 steps:
 - task: Cache@2
   inputs:
-    key: 'gradle | "$(Agent.OS)"'
-    restoreKeys: gradle
+    key: 'gradleUserHome | "$(Agent.OS)"'
+    restoreKeys: gradleUserHome
     path: $(GRADLE_USER_HOME)
-  displayName: Gradle Build Cache
+  displayName: Gradle User Home Cache
+
+- task: Cache@2
+  inputs:
+    key: 'projectSpecificGradleCache | "$(Agent.OS)"'
+    restoreKeys: projectSpecificGradleCache
+    path: $(Build.SourcesDirectory)/.gradle
+  displayName: Project Specific Gradle Cache
+
+- task: Cache@2
+  inputs:
+    key: 'projectSpecificBuildFolder | "$(Agent.OS)"'
+    restoreKeys: projectSpecificBuildFolder
+    path: $(Build.SourcesDirectory)/build
+  displayName: Project Specific BuildFolder Cache
 
 - task: Gradle@2
-  displayName: 'Gradle Build : JVM'
+  displayName: 'Gradle Build : Tar Distribution'
   inputs:
     gradleOptions: '-Xmx3072m'
-    tasks: jar
+    # TODO : Add build scan, upload build scan results
+    tasks: distTar
 
 - script: 'gradlew --stop'    
   displayName: Stop Gradle Daemon
 
-# Upload Executable Jar File
+# Upload Executable Tar File
 - task: FtpUpload@2
-  displayName: 'FTP Upload $(repositoryName) Jar File'
+  displayName: 'FTP Upload $(repositoryName) Tar File'
   inputs:
     credentialsOption: inputs
     serverUrl: 'ftp://$(MAPPED_FTP_HOST)'
@@ -45,4 +61,4 @@ steps:
     # TODO : Add option for file instead of directory
     rootDirectory: '.'
     remoteDirectory: '/public_html/files/$(repositoryName)/$(Build.SourceVersion)'
-    filePatterns: 'build/libs/gradle_cache_preparation.jar'
+    filePatterns: 'build/distributions/gradle_cache_preparation-1.0-SNAPSHOT.tar'
