@@ -12,6 +12,7 @@ public class Main {
     private boolean isDryRun = true;
 
     private String gradleRepositoryFolder = "C:\\Programs\\gradle_repository";
+    private boolean isDefaultGradleRepositoryFolder = true;
     private String cachesFolder = "C:\\Caches_C";
 
     private boolean weatherCacheModules2Folder = false;
@@ -69,7 +70,10 @@ public class Main {
 
                     //TODO : Check for folder existence
                     gradleRepositoryFolder = args[2];
-
+                    if(!args[2].equals(gradleRepositoryFolder)) {
+                        
+                        isDefaultGradleRepositoryFolder = false;
+                    }
                     if(args.length >= 4) {
 
                         cachesFolder = args[3];
@@ -160,15 +164,29 @@ public class Main {
 
                             System.out.println("Adding files-2.1 directory to cache. ");
                             // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
-                            executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
+                            if(isDefaultGradleRepositoryFolder) {
+    
+                                executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
 
+                            } else {
+
+                                // executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath().replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+                            }
                         } else if(currentFileEntryName.contains("metadata-")) {
 
                             if(Float.parseFloat(currentFileEntryName.replace("metadata-","")) >= 2.90)
                             {
                                 System.out.println("Adding "+currentFileEntryName+" directory to cache. ");
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
-                                executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
+
+                                if(isDefaultGradleRepositoryFolder) {
+                                    
+                                    executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
+
+                                } else {
+
+                                    // executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath().replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+                                }
                             }
                         }
 
@@ -189,9 +207,18 @@ public class Main {
 						String jdkDistributionFullPath = fileEntry.getPath();
 						System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
 						System.out.println("Adding " + jdkDistributionFullPath);
-						// executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
-                        executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath));
-						executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath + ".lock"));
+                        // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
+                        
+                        if(isDefaultGradleRepositoryFolder) {
+                        
+                            executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath));
+                            executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath + ".lock"));
+
+                        } else {
+
+                            // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+                            // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder) + ".lock"));
+                        }
                     }
 
                 } else if (inWrapperFolder) {
@@ -209,16 +236,32 @@ public class Main {
                                 System.out.println("Gradle distribution " + currentFileEntryName + " already available in the cache.");
                                 System.out.println("Adding base directory : " + fileEntry.getParent());
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", "-x" + fileEntry.getParent() + "\\*", cachesFolder + "\\gradle_repository.rar", fileEntry.getParent()});
-                                executeCmdCommandWithWait(updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getParent()));
 
+                                if(isDefaultGradleRepositoryFolder) {
+
+                                    executeCmdCommandWithWait(updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getParent()));
+
+                                } else {
+
+                                    // executeCmdCommandWithWait(updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getParent().replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+                                }
                             } else {
 
                                 String gradleDistributionFullPath = fileEntry.getPath();
                                 System.out.println("Adding Gradle distribution " + currentFileEntryName + " to cache.");
                                 System.out.println("Adding " + gradleDistributionFullPath);
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", gradleDistributionFullPath, gradleDistributionFullPath + ".lck"});
-                                executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath));
-								executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lck"));
+
+                                if(isDefaultGradleRepositoryFolder) {
+
+                                    executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath));
+                                    executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lck"));
+                                
+                                } else {
+
+                                    // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+                                    // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder) + ".lck"));
+                                }
 
                                 distributions.add(fileEntry.getName());
                             }
