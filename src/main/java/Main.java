@@ -70,7 +70,7 @@ public class Main {
 
                     //TODO : Check for folder existence
                     gradleRepositoryFolder = args[2];
-		    //TODO : Check isDefaultGradleRepositoryFolderIgnoringDriveLetter is false
+		            //TODO : Check isDefaultGradleRepositoryFolderIgnoringDriveLetter is false
                     if(args.length >= 4) {
 
                         cachesFolder = args[3];
@@ -89,7 +89,7 @@ public class Main {
 
             if (!inWrapperFolder && !inCachesFolder && !inJdksFolder && fileEntry.isDirectory()) {
 
-//                System.out.println("Current folder = " + currentFileEntryName);
+                // System.out.println("Current folder = " + currentFileEntryName);
 
                 //TODO : Move to folder utils, use interface for folder specific operations - folder_name & action pairs
                 switch (fileEntry.getName()) {
@@ -124,18 +124,18 @@ public class Main {
                         }
                     }
                 }
-//                System.out.println("inWrapperFolder = " + inWrapperFolder);
-//                System.out.println("inCachesFolder = " + inCachesFolder);
+                // System.out.println("inWrapperFolder = " + inWrapperFolder);
+                // System.out.println("inCachesFolder = " + inCachesFolder);
                 System.out.println("Traversing folder " + currentFileEntryName);
                 listFilesForFolder(fileEntry, cachesFolder);
                 inCachesFolder = inWrapperFolder = inJdksFolder = false;
 
             } else {
 
-//                System.out.println("inWrapperFolder = " + inWrapperFolder);
-//                System.out.println("inCachesFolder = " + inCachesFolder);
+                // System.out.println("inWrapperFolder = " + inWrapperFolder);
+                // System.out.println("inCachesFolder = " + inCachesFolder);
 
-//                System.out.println("Current file = " + currentFileEntryName);
+                // System.out.println("Current file = " + currentFileEntryName);
 
                 File outFolder = new File(cachesFolder);
                 if (!outFolder.exists()) {
@@ -167,7 +167,7 @@ public class Main {
 
                             } else {
 
-				//TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
+				                //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                             }
                         } else if(currentFileEntryName.contains("metadata-")) {
 
@@ -182,7 +182,8 @@ public class Main {
 
                                 } else {
 
-				    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
+				                    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
+                                }
                             }
                         }
                     }
@@ -199,20 +200,20 @@ public class Main {
 
                     if (currentFileEntryName.contains("jdk") && FilenameUtils.getExtension(currentFileEntryName).equals("zip")) {
 
-			String jdkDistributionFullPath = fileEntry.getPath();
-			System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
-			System.out.println("Adding " + jdkDistributionFullPath);
+			            String jdkDistributionFullPath = fileEntry.getPath();
+			            System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
+			            System.out.println("Adding " + jdkDistributionFullPath);
                         // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
                         
                         if(isDefaultGradleRepositoryFolderIgnoringDriveLetter) {
                         
-			    //TODO : Merge into single command
+			                //TODO : Merge into single command
                             executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath));
                             executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath + ".lock"));
 
                         } else {
 
-			    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
+			                //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                         }
                     }
 
@@ -238,7 +239,7 @@ public class Main {
 
                                 } else {
 
-				    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
+				                    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                                 }
                             } else {
 
@@ -254,7 +255,7 @@ public class Main {
                                 
                                 } else {
 
-				    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
+				                    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                                 }
 
                                 distributions.add(fileEntry.getName());
@@ -264,8 +265,8 @@ public class Main {
                         
                         else if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
-			    // System.out.println("Traversing folder " + currentFileEntryName);
-			    listFilesForFolder(fileEntry, cachesFolder);
+			                // System.out.println("Traversing folder " + currentFileEntryName);
+			                listFilesForFolder(fileEntry, cachesFolder);
                         }
 
                     } else if (currentFileEntryName.equals("dists")) {
