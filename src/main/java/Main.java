@@ -12,7 +12,7 @@ public class Main {
     private boolean isDryRun = true;
 
     private String gradleRepositoryFolder = "C:\\Programs\\gradle_repository";
-    private boolean isDefaultGradleRepositoryFolder = true;
+    private boolean isDefaultGradleRepositoryFolderIgnoringDriveLetter = true;
     private String cachesFolder = "C:\\Caches_C";
 
     private boolean weatherCacheModules2Folder = false;
@@ -70,10 +70,7 @@ public class Main {
 
                     //TODO : Check for folder existence
                     gradleRepositoryFolder = args[2];
-                    if(!args[2].equals(gradleRepositoryFolder)) {
-                        
-                        isDefaultGradleRepositoryFolder = false;
-                    }
+		    //TODO : Check isDefaultGradleRepositoryFolderIgnoringDriveLetter is false
                     if(args.length >= 4) {
 
                         cachesFolder = args[3];
@@ -164,13 +161,13 @@ public class Main {
 
                             System.out.println("Adding files-2.1 directory to cache. ");
                             // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
-                            if(isDefaultGradleRepositoryFolder) {
+                            if(isDefaultGradleRepositoryFolderIgnoringDriveLetter) {
     
-                                executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
+                                executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
 
                             } else {
 
-                                // executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath().replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+				//TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                             }
                         } else if(currentFileEntryName.contains("metadata-")) {
 
@@ -179,17 +176,15 @@ public class Main {
                                 System.out.println("Adding "+currentFileEntryName+" directory to cache. ");
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", fileEntry.getPath()});
 
-                                if(isDefaultGradleRepositoryFolder) {
+                                if(isDefaultGradleRepositoryFolderIgnoringDriveLetter) {
                                     
-                                    executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
+                                    executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
 
                                 } else {
 
-                                    // executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath().replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
-                                }
+				    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                             }
                         }
-
                     }
                     //TODO : Expand for modules version 2 & greater
                     else if (currentFileEntryName.equals("modules-2")) {
@@ -204,20 +199,20 @@ public class Main {
 
                     if (currentFileEntryName.contains("jdk") && FilenameUtils.getExtension(currentFileEntryName).equals("zip")) {
 
-						String jdkDistributionFullPath = fileEntry.getPath();
-						System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
-						System.out.println("Adding " + jdkDistributionFullPath);
+			String jdkDistributionFullPath = fileEntry.getPath();
+			System.out.println("Adding JDK distribution " + currentFileEntryName + " to cache.");
+			System.out.println("Adding " + jdkDistributionFullPath);
                         // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", jdkDistributionFullPath, jdkDistributionFullPath + ".lock"});
                         
-                        if(isDefaultGradleRepositoryFolder) {
+                        if(isDefaultGradleRepositoryFolderIgnoringDriveLetter) {
                         
-                            executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath));
-                            executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath + ".lock"));
+			    //TODO : Merge into single command
+                            executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath));
+                            executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath + ".lock"));
 
                         } else {
 
-                            // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
-                            // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",jdkDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder) + ".lock"));
+			    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                         }
                     }
 
@@ -237,13 +232,13 @@ public class Main {
                                 System.out.println("Adding base directory : " + fileEntry.getParent());
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", "-x" + fileEntry.getParent() + "\\*", cachesFolder + "\\gradle_repository.rar", fileEntry.getParent()});
 
-                                if(isDefaultGradleRepositoryFolder) {
+                                if(isDefaultGradleRepositoryFolderIgnoringDriveLetter) {
 
-                                    executeCmdCommandWithWait(updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getParent()));
+                                    executeCmdCommandWithWait(updateAndAddFolderIncludingAbsolutePathsIgnoringDriveLetterExcludingFolderContentsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getParent()));
 
                                 } else {
 
-                                    // executeCmdCommandWithWait(updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getParent().replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
+				    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                                 }
                             } else {
 
@@ -252,15 +247,14 @@ public class Main {
                                 System.out.println("Adding " + gradleDistributionFullPath);
                                 // executeCmdCommandWithWait(new String[]{"winrar", "u", cachesFolder + "\\gradle_repository.rar", gradleDistributionFullPath, gradleDistributionFullPath + ".lck"});
 
-                                if(isDefaultGradleRepositoryFolder) {
+                                if(isDefaultGradleRepositoryFolderIgnoringDriveLetter) {
 
-                                    executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath));
-                                    executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lck"));
+                                    executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath));
+                                    executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath + ".lck"));
                                 
                                 } else {
 
-                                    // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder)));
-                                    // executeCmdCommandWithWait(updateAndAddFileIncludingAbsolutePathWith7zArchieve(cachesFolder + "\\gradle_repository.7z",gradleDistributionFullPath.replace(gradleRepositoryFolder, defaultGradleRepositoryFolder) + ".lck"));
+				    //TODO : Handle Gradle Repository Other Than DriveLetter:\Programs\gradle_repository
                                 }
 
                                 distributions.add(fileEntry.getName());
@@ -270,8 +264,8 @@ public class Main {
                         
                         else if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
-							// System.out.println("Traversing folder " + currentFileEntryName);
-							listFilesForFolder(fileEntry, cachesFolder);
+			    // System.out.println("Traversing folder " + currentFileEntryName);
+			    listFilesForFolder(fileEntry, cachesFolder);
                         }
 
                     } else if (currentFileEntryName.equals("dists")) {
@@ -309,21 +303,21 @@ public class Main {
         }
     }
 
-    //7z u -t7z msys2-x86_64-20210105-mingw_w64-boost-qt-cache.7z -up1q0r2x1y2z1w2 -spf C:\msys64\var\cache\pacman\pkg\ -mx=9
-    public String[] syncFolderIncludingAbsolutePathsWith7zArchieve(String archieveFileFullPath, String folderToSyncFullPath) {
+    //7z u -t7z msys2-x86_64-20210105-mingw_w64-boost-qt-cache.7z -up1q0r2x1y2z1w2 -spf2 C:\msys64\var\cache\pacman\pkg\ -mx=9
+    public String[] syncFolderIncludingAbsolutePathsIgnoringDriveLetterWith7zArchieve(String archieveFileFullPath, String folderToSyncFullPath) {
 
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q0r2x1y2z1w2", "-spf", folderToSyncFullPath+"\\", "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q0r2x1y2z1w2", "-spf2", folderToSyncFullPath+"\\", "-mx=9"};
     }
 
-    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf file.txt -mx=9
-    public String[] updateAndAddFileIncludingAbsolutePathWith7zArchieve(String archieveFileFullPath, String fileToUpdateAndAddWithFullPath) {
+    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf2 file.txt -mx=9
+    public String[] updateAndAddFileIncludingAbsolutePathIgnoringDriveLetterWith7zArchieve(String archieveFileFullPath, String fileToUpdateAndAddWithFullPath) {
     
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", fileToUpdateAndAddWithFullPath, "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf2", fileToUpdateAndAddWithFullPath, "-mx=9"};
     }
 
-    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf folder\ -x!folder\* -mx=9
-    public String[] updateAndAddFolderIncludingAbsolutePathsExcludingFolderContentsWith7zArchieve(String archieveFileFullPath, String folderToUpdateAndAddFullPath) {
+    //7z u -t7z archive.zip -up1q1r2x1y2z1w2 -spf2 folder\ -x!folder\* -mx=9
+    public String[] updateAndAddFolderIncludingAbsolutePathsIgnoringDriveLetterExcludingFolderContentsWith7zArchieve(String archieveFileFullPath, String folderToUpdateAndAddFullPath) {
     
-        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf", folderToUpdateAndAddFullPath+"\\", "-x!"+folderToUpdateAndAddFullPath+"\\*", "-mx=9"};
+        return new String[]{"7z", "u", "-t7z", archieveFileFullPath, "-up1q1r2x1y2z1w2", "-spf2", folderToUpdateAndAddFullPath+"\\", "-x!"+folderToUpdateAndAddFullPath+"\\*", "-mx=9"};
     }
 }
