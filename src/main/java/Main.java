@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -260,13 +263,21 @@ public class Main {
 
                                 distributions.add(fileEntry.getName());
                             }
-                        } 
-                        //TODO : Add blank gradle distribution base folders
-                        
+                        }                         
                         else if (fileEntry.isDirectory() && ((currentFileEntryName.contains("all") || currentFileEntryName.contains("bin")) || !currentFileEntryName.contains("gradle"))) {
 
-			                // System.out.println("Traversing folder " + currentFileEntryName);
-			                listFilesForFolder(fileEntry, cachesFolder);
+                            //TODO : Add blank gradle distribution base folders
+                            if(!currentFileEntryName.contains("gradle") && isEmptyFolder(fileEntry.toPath())){
+
+                                //TODO : Check it is md5 hash string
+                                //TODO : Check it is a valid md5 hash string
+                                 executeCmdCommandWithWait(syncFolderIncludingAbsolutePathsIgnoringDriveLetterWith7zArchieve(cachesFolder + "\\gradle_repository.7z",fileEntry.getPath()));
+
+                            } else {
+
+                                // System.out.println("Traversing folder " + currentFileEntryName);
+			                    listFilesForFolder(fileEntry, cachesFolder);
+                            }
                         }
 
                     } else if (currentFileEntryName.equals("dists")) {
@@ -281,7 +292,23 @@ public class Main {
         }
     }
 
-    //TODO : Move to console utils, use exit_status & exit_message pair return
+    public boolean isEmptyFolder(Path path) {
+    
+        if (Files.isDirectory(path)) {
+            
+            try (Stream<Path> entries = Files.list(path)) {
+                
+                return !entries.findFirst().isPresent();
+
+            } catch (IOException e) {
+                
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    // TODO : Move to console utils, use exit_status & exit_message pair return
     public void executeCmdCommandWithWait(String[] commandWithArguments) {
 
         System.out.println("CMD Command : " + Arrays.toString(commandWithArguments));
